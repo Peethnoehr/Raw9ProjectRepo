@@ -98,14 +98,6 @@ namespace Assignment4
             modelBuilder.Entity<QAUser>().Property(m => m.Age).HasColumnName("age");
             modelBuilder.Entity<QAUser>().Property(m => m.UserLocation).HasColumnName("userlocation");
             modelBuilder.Entity<QAUser>().Property(m => m.CreationDate).HasColumnName("creationdate");
-            
-            
-            modelBuilder.Entity<OrderDetails>().HasKey(o => new { o.OrderId, o.ProductId });
-            modelBuilder.Entity<OrderDetails>().Property(m => m.OrderId).HasColumnName("orderid");
-            modelBuilder.Entity<OrderDetails>().Property(m => m.ProductId).HasColumnName("productid");
-            modelBuilder.Entity<OrderDetails>().Property(m => m.UnitPrice).HasColumnName("unitprice");
-            modelBuilder.Entity<OrderDetails>().Property(m => m.Quantity).HasColumnName("quantity");
-            modelBuilder.Entity<OrderDetails>().Property(m => m.Discount).HasColumnName("discount");
         }
     }
 }
