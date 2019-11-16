@@ -28,12 +28,14 @@ namespace Assignment4
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Annotation>().ToTable("hm_annotation");
+            modelBuilder.Entity<Annotation>().HasKey(o => new { o.AnnotationId });
             modelBuilder.Entity<Annotation>().Property(m => m.AnnotationId).HasColumnName("annotationid");
             modelBuilder.Entity<Annotation>().Property(m => m.AnnotationDate).HasColumnName("annotationdate");
             modelBuilder.Entity<Annotation>().Property(m => m.AnnotationText).HasColumnName("annotationtext");
             modelBuilder.Entity<Annotation>().Property(m => m.MarkingId).HasColumnName("markingid");
 
             modelBuilder.Entity<Marking>().ToTable("hm_marking");
+            modelBuilder.Entity<Marking>().HasKey(o => new { o.MarkingId });
             modelBuilder.Entity<Marking>().Property(m => m.MarkingId).HasColumnName("markingid");
             modelBuilder.Entity<Marking>().Property(m => m.MarkingDate).HasColumnName("markingdate");
             modelBuilder.Entity<Marking>().Property(m => m.UserId).HasColumnName("userid");
@@ -41,12 +43,14 @@ namespace Assignment4
             modelBuilder.Entity<Marking>().Property(m => m.CommentId).HasColumnName("commentid");
             
             modelBuilder.Entity<SearchHistory>().ToTable("hm_searchhistory");
+            modelBuilder.Entity<SearchHistory>().HasKey(o => new { o.SearchHistoryId });
             modelBuilder.Entity<SearchHistory>().Property(m => m.SearchHistoryId).HasColumnName("searchhistoryid");
-            modelBuilder.Entity<SearchHistory>().Property(m => m.SearchDate).HasColumnName("searchhistoryid");
-            modelBuilder.Entity<SearchHistory>().Property(m => m.SearchText).HasColumnName("searchhistoryid");
+            modelBuilder.Entity<SearchHistory>().Property(m => m.SearchDate).HasColumnName("searchdate");
+            modelBuilder.Entity<SearchHistory>().Property(m => m.SearchText).HasColumnName("searchtext");
             modelBuilder.Entity<SearchHistory>().Property(m => m.UserId).HasColumnName("userid");
             
             modelBuilder.Entity<AppUser>().ToTable("hm_user");
+            modelBuilder.Entity<AppUser>().HasKey(o => new {o.UserId});
             modelBuilder.Entity<AppUser>().Property(m => m.UserId).HasColumnName("userid");
             modelBuilder.Entity<AppUser>().Property(m => m.DisplayName).HasColumnName("displayname");
             modelBuilder.Entity<AppUser>().Property(m => m.CreationDate).HasColumnName("creationdate");
@@ -54,10 +58,12 @@ namespace Assignment4
             modelBuilder.Entity<AppUser>().Property(m => m.Email).HasColumnName("email");
             
             modelBuilder.Entity<Answer>().ToTable("qa_answer");
+            modelBuilder.Entity<Answer>().HasKey(o => new { o.AnswerId});
             modelBuilder.Entity<Answer>().Property(m => m.AnswerId).HasColumnName("answerid");
             modelBuilder.Entity<Answer>().Property(m => m.QuestionId).HasColumnName("questionid");
 
             modelBuilder.Entity<Comment>().ToTable("qa_comment");
+            modelBuilder.Entity<Comment>().HasKey(o => new { o.CommentId});
             modelBuilder.Entity<Comment>().Property(m => m.CommentId).HasColumnName("commentid");
             modelBuilder.Entity<Comment>().Property(m => m.TextContain).HasColumnName("textcontain");
             modelBuilder.Entity<Comment>().Property(m => m.Score).HasColumnName("score");
@@ -76,6 +82,7 @@ namespace Assignment4
             modelBuilder.Entity<Links>().Property(m => m.PostId).HasColumnName("postid");
 
             modelBuilder.Entity<Post>().ToTable("qa_post");
+            modelBuilder.Entity<Post>().HasKey(o => new { o.PostId });
             modelBuilder.Entity<Post>().Property(m => m.PostId).HasColumnName("postid");
             modelBuilder.Entity<Post>().Property(m => m.Body).HasColumnName("body");
             modelBuilder.Entity<Post>().Property(m => m.Score).HasColumnName("score");
@@ -83,16 +90,19 @@ namespace Assignment4
             modelBuilder.Entity<Post>().Property(m => m.UserId).HasColumnName("userid");
             
             modelBuilder.Entity<Question>().ToTable("qa_question");
+            modelBuilder.Entity<Question>().HasKey(o => new { o.QuestionId });
             modelBuilder.Entity<Question>().Property(m => m.QuestionId).HasColumnName("questionid");
             modelBuilder.Entity<Question>().Property(m => m.Title).HasColumnName("title");
             modelBuilder.Entity<Question>().Property(m => m.ClosedDate).HasColumnName("closeddate");
             modelBuilder.Entity<Question>().Property(m => m.AcceptAnswer).HasColumnName("acceptanswer");
             
             modelBuilder.Entity<Tag>().ToTable("qa_tag");
+            modelBuilder.Entity<Tag>().HasKey(o => new { o.TagId});
             modelBuilder.Entity<Tag>().Property(m => m.TagId).HasColumnName("tagid");
             modelBuilder.Entity<Tag>().Property(m => m.TagName).HasColumnName("tagname");
             
             modelBuilder.Entity<QAUser>().ToTable("qa_user");
+            modelBuilder.Entity<QAUser>().HasKey(o => new { o.UserId });
             modelBuilder.Entity<QAUser>().Property(m => m.UserId).HasColumnName("userid");
             modelBuilder.Entity<QAUser>().Property(m => m.DisplayName).HasColumnName("displayname");
             modelBuilder.Entity<QAUser>().Property(m => m.Age).HasColumnName("age");

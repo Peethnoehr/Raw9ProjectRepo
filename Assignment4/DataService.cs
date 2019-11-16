@@ -10,6 +10,7 @@ namespace DatabaseService
 {
     public class DataService
     {
+        /*
         // ORDER
         public List<Order> GetOrders()
         {
@@ -134,14 +135,14 @@ namespace DatabaseService
             using var db = new NorthwindContex();
             return db.Categories.Find(idquery);
         }
-        
+        */
         //10
-        public List<Category> GetCategories()
+        public List<AppUser> GetUsers()
         {
-            using var db = new NorthwindContex();
-            return db.Categories.ToList();
+            using var db = new StackoverflowContext();
+            return db.AppUsers.ToList();
         }
-        
+        /*
         //11
         public Category CreateCategory(string namequery, string descriptionquery)
         {
@@ -205,5 +206,6 @@ namespace DatabaseService
                 return false;
             }
         }
+        */
     }
 }

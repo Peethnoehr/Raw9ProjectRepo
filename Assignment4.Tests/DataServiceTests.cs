@@ -12,21 +12,20 @@ namespace Assignment4.Tests
         [Fact]
         public void Category_Object_HasIdNameAndDescription()
         {
-            var category = new Category();
-            Assert.Equal(0, category.Id);
-            Assert.Null(category.Name);
-            Assert.Null(category.Description);
+            var annotation = new Annotation();
+            Assert.Equal(0, annotation.AnnotationId);
+            Assert.Equal(0,annotation.MarkingId);
         }
 
         [Fact]
         public void GetAllCategories_NoArgument_ReturnsAllCategories()
         {
             var service = new DataService();
-            var categories = service.GetCategories();
-            Assert.Equal(8, categories.Count);
-            Assert.Equal("Beverages", categories.First().Name);
+            var users = service.GetUsers();
+            Assert.Equal(1, users.Count);
+            Assert.Equal("test", users.First().DisplayName);
         }
-
+/*
         [Fact]
         public void GetCategory_ValidId_ReturnsCategoryObject()
         {
@@ -92,10 +91,10 @@ namespace Assignment4.Tests
             var result = service.UpdateCategory(-1, "UpdatedName", "UpdatedDescription");
             Assert.False(result);
         }
-
+*/
 
         /* products */
-
+/*
         [Fact]
         public void Product_Object_HasIdNameUnitPriceQuantityPerUnitAndUnitsInStock()
         {
@@ -136,8 +135,10 @@ namespace Assignment4.Tests
             Assert.Equal("NuNuCa Nuß-Nougat-Creme", products.First().Name);
             Assert.Equal("Flotemysost", products.Last().Name);
         }
-
+*/
         /* orders */
+        /*
+         
         [Fact]
         public void Order_Object_HasIdDatesAndOrderDetails()
         {
@@ -167,9 +168,10 @@ namespace Assignment4.Tests
             var orders = service.GetOrders();
             Assert.Equal(830, orders.Count);
         }
-
+*/
 
         /* orderdetails */
+        /*
         [Fact]
         public void OrderDetails_Object_HasOrderProductUnitPriceQuantityAndDiscount()
         {
@@ -204,5 +206,6 @@ namespace Assignment4.Tests
             Assert.Equal(21, orderDetails.First().UnitPrice);
             Assert.Equal(3, orderDetails.First().Quantity);
         }
+        */
     }
 }
