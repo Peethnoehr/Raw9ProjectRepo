@@ -10,78 +10,105 @@ namespace Assignment4.Tests
         /* Categories */
 
         [Fact]
-        public void Category_Object_HasIdNameAndDescription()
-        {
-            var annotation = new Annotation();
-            Assert.Equal(0, annotation.AnnotationId);
-            Assert.Equal(0,annotation.MarkingId);
-        }
-
-        [Fact]
-        public void GetAllCategories_NoArgument_ReturnsAllCategories()
+        public void GetAllUsers_NoArgument_ReturnsAllUsers()
         {
             var service = new DataService();
             var users = service.GetUsers();
-            Assert.Equal(1, users.Count);
-            Assert.Equal("test", users.First().DisplayName);
+            Assert.Equal(2, users.Count);
+            Assert.Equal("test2", users.First().DisplayName);
         }
-/*
+
         [Fact]
         public void GetCategory_ValidId_ReturnsCategoryObject()
         {
             var service = new DataService();
-            var category = service.GetCategory(1);
-            Assert.Equal("Beverages", category.Name);
+            var user = service.GetUser(2);
+            Assert.Equal("test2", user.DisplayName);
+            Assert.Equal(2, user.UserId);
+            Assert.Equal("test2pw",user.Password);
+            Assert.Equal("test2@test.test",user.Email);
         }
 
         [Fact]
-        public void CreateCategory_ValidData_CreteCategoryAndRetunsNewObject()
+        public void CreateAppUser_ValidData_CreateUserAndRetunsNewObject()
         {
             var service = new DataService();
-            var category = service.CreateCategory("Test", "CreateCategory_ValidData_CreteCategoryAndRetunsNewObject");
-            Assert.True(category.Id > 0);
-            Assert.Equal("Test", category.Name);
-            Assert.Equal("CreateCategory_ValidData_CreteCategoryAndRetunsNewObject", category.Description);
+            var user = service.CreateAppUser("Test10", "test10pw", "test10@test.test");
+            Assert.True(user.UserId > 0);
+            Assert.Equal("Test10", user.DisplayName);
+            Assert.Equal("test10pw", user.Password);
+            Assert.Equal("test10@test.test", user.Email);
 
             // cleanup
-            service.DeleteCategory(category.Id);
+            service.DeleteAppUser(user.UserId);
         }
 
         [Fact]
         public void DeleteCategory_ValidId_RemoveTheCategory()
         {
             var service = new DataService();
-            var category = service.CreateCategory("Test", "DeleteCategory_ValidId_RemoveTheCategory");
-            var result = service.DeleteCategory(category.Id);
+            var user = service.CreateAppUser("Test10", "test10pw", "test10@test.test");
+            var result = service.DeleteAppUser(user.UserId);
             Assert.True(result);
-            category = service.GetCategory(category.Id);
-            Assert.Null(category);
+            user = service.GetUser(user.UserId);
+            Assert.Null(user);
         }
+        
+        [Fact]
+        public void UpdateAppUser_DisplayName_Password_Email()
+        {
+            var service = new DataService();
+            var user = service.CreateAppUser("TestUpdate","testUpdatePW","testUpdateEmail");
 
+            var result1 = service.UpdateAppUser(user.UserId, "UpdatedName1", "UpdatedPassword1","UpdatedEmail1");
+            Assert.True(result1);
+
+            user = service.GetUser(user.UserId);
+            Assert.Equal("UpdatedName1", user.DisplayName);
+            Assert.Equal("UpdatedPassword1", user.Password);
+            Assert.Equal("UpdatedEmail1", user.Email);
+
+            var result2 = service.UpdateAppUser(user.UserId, "UpdatedName2",null,null);
+            Assert.True(result2);
+
+            user = service.GetUser(user.UserId);
+            Assert.Equal("UpdatedName2",user.DisplayName);
+            Assert.Equal("UpdatedPassword1",user.Password);
+            Assert.Equal("UpdatedEmail1",user.Email);
+
+            var result3 = service.UpdateAppUser(user.UserId, null,"UpdatedPassword2",null);
+            Assert.True(result3);
+
+            user = service.GetUser(user.UserId);
+            Assert.Equal("UpdatedName2",user.DisplayName);
+            Assert.Equal("UpdatedPassword2",user.Password);
+            Assert.Equal("UpdatedEmail1",user.Email);
+            
+            var result4 = service.UpdateAppUser(user.UserId, null,null,"UpdatedEmail2");
+            Assert.True(result4);
+
+            user = service.GetUser(user.UserId);
+            Assert.Equal("UpdatedName2",user.DisplayName);
+            Assert.Equal("UpdatedPassword2",user.Password);
+            Assert.Equal("UpdatedEmail2",user.Email);
+            // cleanup
+            service.DeleteAppUser(user.UserId);
+        }
+        
+        [Fact]
+        public void SearchTest()
+        {
+            var service = new DataService();
+            var result = service.SearchPosts("code");
+            Assert.Equal(1,result.Count);
+        }
+/*
         [Fact]
         public void DeleteCategory_InvalidId_ReturnsFalse()
         {
             var service = new DataService();
             var result = service.DeleteCategory(-1);
             Assert.False(result);
-        }
-
-        [Fact]
-        public void UpdateCategory_NewNameAndDescription_UpdateWithNewValues()
-        {
-            var service = new DataService();
-            var category = service.CreateCategory("TestingUpdate", "UpdateCategory_NewNameAndDescription_UpdateWithNewValues");
-
-            var result = service.UpdateCategory(category.Id, "UpdatedName", "UpdatedDescription");
-            Assert.True(result);
-
-            category = service.GetCategory(category.Id);
-
-            Assert.Equal("UpdatedName", category.Name);
-            Assert.Equal("UpdatedDescription", category.Description);
-
-            // cleanup
-            service.DeleteCategory(category.Id);
         }
 
         [Fact]

@@ -127,55 +127,77 @@ namespace DatabaseService
                 select new Product(){Id = p.Id, Name = p.Name, UnitPrice = p.UnitPrice, Category = new Category(){Id = c.Id, Name = c.Name, Description = c.Description}};
             return query.ToList();
         }
-        
-        // CATEGORY
+        */        
+        // Users
         //9
-        public Category GetCategory(int idquery)
+        public AppUser GetUser(int id)
         {
-            using var db = new NorthwindContex();
-            return db.Categories.Find(idquery);
+            using var db = new StackoverflowContext();
+            return db.AppUsers.Find(id); //find uses primary key to find entity
         }
-        */
+
         //10
         public List<AppUser> GetUsers()
         {
             using var db = new StackoverflowContext();
             return db.AppUsers.ToList();
         }
-        /*
+        
         //11
-        public Category CreateCategory(string namequery, string descriptionquery)
+        public AppUser CreateAppUser(string displayName, string userPassword, string email)
         {
-            using var db = new NorthwindContex();
+            using var db = new StackoverflowContext();
 
-            var nextId = db.Categories.Max(x => x.Id) + 1;
+            var nextId = db.AppUsers.Max(x => x.UserId) + 1;
 
-            var cat = new Category
+            var user = new AppUser()
             {
-                Id = nextId,
-                Name = namequery,
-                Description = descriptionquery
+                UserId = nextId,
+                DisplayName = displayName,
+                CreationDate = DateTime.Now,
+                Password = userPassword,
+                Email = email
             };
             
-            db.Categories.Add(cat);
+            db.AppUsers.Add(user);
             
             db.SaveChanges();
 
-            return db.Categories.Find(nextId);
+            return db.AppUsers.Find(nextId);
         }
-        
         //12
-        public Boolean UpdateCategory(int idquery,string namequery, string descriptionquery)
+        public Boolean UpdateAppUser(int id, string displayname, string password, string email)
         {
-            using var db = new NorthwindContex();
+            using var db = new StackoverflowContext();
+    
+            var user = db.AppUsers.Find(id);
 
-            var category = db.Categories.Find(idquery);
-
-            if (category != null)
+            if (user != null)
             {
-                category.Name = namequery;
-                category.Description = descriptionquery;
-                
+                if (displayname != null) user.DisplayName = displayname;
+                if (password != null) user.Password = password;
+                if (email != null) user.Email = email;
+
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        //13
+        public Boolean DeleteAppUser(int userid)
+        {
+            using var db = new StackoverflowContext();
+
+            var user = db.AppUsers.Find(userid);
+
+            if (user != null)
+            {
+                db.AppUsers.Remove(user);
+
                 db.SaveChanges();
 
                 return true;
@@ -186,26 +208,18 @@ namespace DatabaseService
             }
         }
         
-        //13
-        public Boolean DeleteCategory(int idquery)
+        public List<Post> SearchPosts(string searchString)
         {
-            using var db = new NorthwindContex();
-
-            var category = db.Categories.Find(idquery);
-
-            if (category != null)
-            {
-                db.Categories.Remove(category);
-
-                db.SaveChanges();
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            using var db = new StackoverflowContext();
+            var query =
+                from p in db.Posts
+                join u in db.Questions on p.PostId equals u.QuestionId
+                where p.Body.Contains(searchString)
+                select new Post()
+                {
+                    PostId = p.PostId, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId
+                };
+            return query.ToList();
         }
-        */
     }
 }
