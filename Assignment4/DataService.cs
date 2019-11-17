@@ -208,18 +208,75 @@ namespace DatabaseService
             }
         }
         
-        public List<Post> SearchPosts(string searchString)
+        public List<Post> SearchPosts(int userId, string searchString) //currently set up to only search for question posts
         {
             using var db = new StackoverflowContext();
             var query =
                 from p in db.Posts
-                join u in db.Questions on p.PostId equals u.QuestionId
+                join u in db.Questions on p.PostId equals u.QuestionId //comment out this line to search for all posts
                 where p.Body.Contains(searchString)
                 select new Post()
                 {
                     PostId = p.PostId, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId
                 };
+
+            var searchHistoryEntity = AddToSearchHistory(userId, searchString);
+            
             return query.ToList();
+        }
+
+        public List<Post> GetAllPosts()
+        {
+            using var db = new StackoverflowContext();
+            return db.Posts.ToList();
+        }
+        
+        public SearchHistory AddToSearchHistory(int userId, string searchText)
+        {
+            using var db = new StackoverflowContext();
+            int nextId;
+            try
+            {
+                nextId = db.SearchHistories.Max(x => x.UserId) + 1;
+            }
+            catch (Exception e)
+            {
+                nextId = 1;
+            }
+
+            var searchHistory = new SearchHistory()
+            {
+                SearchHistoryId = nextId,
+                SearchDate = DateTime.Now,
+                SearchText = searchText,
+                UserId = userId
+            };
+            
+            db.SearchHistories.Add(searchHistory);
+            
+            db.SaveChanges();
+
+            return db.SearchHistories.Find(nextId);
+        }
+        
+        public Boolean DeleteSearchHistory(int shId)
+        {
+            using var db = new StackoverflowContext();
+
+            var sh = db.SearchHistories.Find(shId);
+
+            if (sh != null)
+            {
+                db.SearchHistories.Remove(sh);
+
+                db.SaveChanges();
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

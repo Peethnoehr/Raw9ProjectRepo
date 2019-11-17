@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using DatabaseService;
 using Xunit;
@@ -99,8 +100,20 @@ namespace Assignment4.Tests
         public void SearchTest()
         {
             var service = new DataService();
-            var result = service.SearchPosts("code");
-            Assert.Equal(1,result.Count);
+            var result = service.SearchPosts(1,"code");
+            Assert.True(result.Count > 0 && result.Count < service.GetAllPosts().Count);
+        }
+        
+        [Fact]
+        public void TestAddToSearchHistory()
+        {
+            var service = new DataService();
+            var sh = service.AddToSearchHistory(1, "test");
+            Assert.Equal(1, sh.UserId);
+            Assert.Equal("test",sh.SearchText);
+
+            // cleanup
+            service.DeleteSearchHistory(sh.SearchHistoryId);
         }
 /*
         [Fact]
