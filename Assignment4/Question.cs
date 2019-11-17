@@ -8,5 +8,7 @@ namespace Assignment4
         public string Title { get; set; }
         public DateTime ClosedDate { get; set; }
         public int AcceptAnswer { get; set; }
+        
+        public Post questionPost { get; set; }
     }
 }

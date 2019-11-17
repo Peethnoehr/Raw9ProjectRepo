@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore;
 namespace Assignment4
 {
     public class StackoverflowContext : DbContext
-    { 
-        public DbSet<Annotation> Annotations { get; set; }
+    {
         public DbSet<Answer> Answers { get; set; }
         public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Describes> Descriptions { get; set; }
         public DbSet<Links> Links { get; set; }
-        public DbSet<Marking> Markings { get; set; }
+        public DbSet<MarkingPost> MarkingsPost { get; set; }
+        public DbSet<MarkingComment> MarkingsComment { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<QAUser> QaUsers { get; set; }
         public DbSet<Question> Questions { get; set; }
@@ -27,20 +27,21 @@ namespace Assignment4
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Annotation>().ToTable("hm_annotation");
-            modelBuilder.Entity<Annotation>().HasKey(o => new { o.AnnotationId });
-            modelBuilder.Entity<Annotation>().Property(m => m.AnnotationId).HasColumnName("annotationid");
-            modelBuilder.Entity<Annotation>().Property(m => m.AnnotationDate).HasColumnName("annotationdate");
-            modelBuilder.Entity<Annotation>().Property(m => m.AnnotationText).HasColumnName("annotationtext");
-            modelBuilder.Entity<Annotation>().Property(m => m.MarkingId).HasColumnName("markingid");
+            modelBuilder.Entity<MarkingPost>().ToTable("hm_marking_post");
+            modelBuilder.Entity<MarkingPost>().HasKey(o => new { o.MarkingId });
+            modelBuilder.Entity<MarkingPost>().Property(m => m.MarkingId).HasColumnName("markingid");
+            modelBuilder.Entity<MarkingPost>().Property(m => m.MarkingDate).HasColumnName("markingdate");
+            modelBuilder.Entity<MarkingPost>().Property(m => m.UserId).HasColumnName("userid");
+            modelBuilder.Entity<MarkingPost>().Property(m => m.PostId).HasColumnName("postid");
+            modelBuilder.Entity<MarkingPost>().Property(m => m.Annotation).HasColumnName("annotation");
 
-            modelBuilder.Entity<Marking>().ToTable("hm_marking");
-            modelBuilder.Entity<Marking>().HasKey(o => new { o.MarkingId });
-            modelBuilder.Entity<Marking>().Property(m => m.MarkingId).HasColumnName("markingid");
-            modelBuilder.Entity<Marking>().Property(m => m.MarkingDate).HasColumnName("markingdate");
-            modelBuilder.Entity<Marking>().Property(m => m.UserId).HasColumnName("userid");
-            modelBuilder.Entity<Marking>().Property(m => m.PostId).HasColumnName("postid");
-            modelBuilder.Entity<Marking>().Property(m => m.CommentId).HasColumnName("commentid");
+            modelBuilder.Entity<MarkingComment>().ToTable("hm_marking_comment");
+            modelBuilder.Entity<MarkingComment>().HasKey(o => new { o.MarkingId });
+            modelBuilder.Entity<MarkingComment>().Property(m => m.MarkingId).HasColumnName("markingid");
+            modelBuilder.Entity<MarkingComment>().Property(m => m.MarkingDate).HasColumnName("markingdate");
+            modelBuilder.Entity<MarkingComment>().Property(m => m.UserId).HasColumnName("userid");
+            modelBuilder.Entity<MarkingComment>().Property(m => m.CommentId).HasColumnName("commentid");
+            modelBuilder.Entity<MarkingComment>().Property(m => m.Annotation).HasColumnName("annotation");
             
             modelBuilder.Entity<SearchHistory>().ToTable("hm_searchhistory");
             modelBuilder.Entity<SearchHistory>().HasKey(o => new { o.SearchHistoryId });

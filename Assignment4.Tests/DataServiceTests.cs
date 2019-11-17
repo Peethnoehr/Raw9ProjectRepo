@@ -100,7 +100,7 @@ namespace Assignment4.Tests
         public void SearchTest()
         {
             var service = new DataService();
-            var result = service.SearchPosts(1,"code");
+            var result = service.SearchPosts(1,"abc");
             Assert.True(result.Count > 0 && result.Count < service.GetAllPosts().Count);
         }
         
@@ -115,6 +115,32 @@ namespace Assignment4.Tests
             // cleanup
             service.DeleteSearchHistory(sh.SearchHistoryId);
         }
+
+        [Fact]
+        public void TestSetMarkingWithAnnotation()
+        {
+            var service = new DataService();
+            var marking = service.SetMarkingPost(1, 19,"testAnnotation2");
+            Assert.Equal("testAnnotation2",marking.Annotation);
+            var markings = service.GetMarkedPosts(1);
+            Assert.True(1 == markings.Count);
+            Assert.Equal("testAnnotation2",markings.First().Annotation);
+            
+            //cleanup
+//            service.RemoveMarking(markings.First().MarkingId);
+        }
+        
+        [Fact]
+        public void TestSetMarkingNoAnnotation()
+        {
+            var service = new DataService();
+            var marking = service.SetMarkingPost(1, 19,null);
+            var markings = service.GetMarkedPosts(1);
+            Assert.Equal(19,markings.First().PostId);
+            Assert.Equal(1,markings.First().UserId);
+            Assert.Null(markings.First().Annotation);
+        }
+        
 /*
         [Fact]
         public void DeleteCategory_InvalidId_ReturnsFalse()
