@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Assignment4
 {
@@ -10,5 +11,7 @@ namespace Assignment4
         public DateTime CreationDate { get; set; }
         public int UserId { get; set; }
         
+        public List<Comment> Comments { get; set; }
+
     }
 }

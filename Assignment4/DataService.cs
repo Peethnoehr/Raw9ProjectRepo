@@ -10,140 +10,18 @@ namespace DatabaseService
 {
     public class DataService
     {
-        /*
-        // ORDER
-        public List<Order> GetOrders()
-        {
-            var listorderdetail = GetOrderDetails();
-                
-            using var db = new NorthwindContex();
-            var query =
-                from o in db.Orders
-                select new Order(){Id = o.Id, Date = o.Date, Freight = o.Freight, Required = o.Required, Shipped = o.Shipped == null ? DateTime.Now : o.Shipped, ShipCity = o.ShipCity, ShipName = o.ShipName, OrderDetails = listorderdetail};
-            return query.ToList();
-        }
-        
-        //2
-        public List<Order> GetOrdersByShippingName(string shipnamequery)
-        {
-            using var db = new NorthwindContex();
-            return new List<Order>
-            {db.Orders
-                .Where(x => x.ShipName == shipnamequery)
-                .Select(y => new Order(){Id = y.Id, Date = y.Date, ShipName = y.ShipName, ShipCity = y.ShipCity})
-                .FirstOrDefault()};
-        }
-        
-        //3
-        public Order GetOrder(int idquery)
-        {
-            var orderdetails = GetOrderDetailsByOrderId(idquery);
-            
-            using var db = new NorthwindContex();
-            var query =
-                from o in db.Orders
-                join od in db.OrderDetails on o.Id equals od.OrderId
-                where o.Id == idquery
-                select new Order(){Id = o.Id, Date = o.Date, Required = o.Required, Shipped = o.Shipped == null ? DateTime.Now : o.Shipped, Freight = o.Freight, ShipName = o.ShipName, ShipCity = o.ShipCity, OrderDetails = orderdetails};
-            return query.FirstOrDefault();
-        }
-        
-        // ORDERDETAIL
-        public List<OrderDetails> GetOrderDetails()
-        {
-            using var db = new NorthwindContex();
-            var query =
-                from od in db.OrderDetails
-                join p in db.Products on od.ProductId equals p.Id
-                join c in db.Categories on p.CategoryId equals c.Id
-                select new OrderDetails(){OrderId = od.OrderId, Quantity = od.Quantity, UnitPrice = od.UnitPrice, Product = new Product(){Id = p.Id, Name = p.Name, UnitPrice = p.UnitPrice, QuantityPerUnit = p.QuantityPerUnit, UnitsInStock = p.UnitsInStock, CategoryId = p.CategoryId, Category = new Category(){Id = c.Id, Name = c.Name, Description = c.Description}}};
-            return query.ToList();
-        }
-        
-        //4
-        public List<OrderDetails> GetOrderDetailsByOrderId(int idquery)
-        {
-            using var db = new NorthwindContex();
-            var query =
-                from od in db.OrderDetails
-                join p in db.Products on od.ProductId equals p.Id
-                join c in db.Categories on p.CategoryId equals c.Id
-                where od.OrderId == idquery
-                select new OrderDetails(){OrderId = od.OrderId, Quantity = od.Quantity, UnitPrice = od.UnitPrice, Product = new Product(){Id = p.Id, Name = p.Name, UnitPrice = p.UnitPrice, QuantityPerUnit = p.QuantityPerUnit, UnitsInStock = p.UnitsInStock, CategoryId = p.CategoryId, Category = new Category(){Id = c.Id, Name = c.Name, Description = c.Description}}};
-            return query.ToList();
-        }
-        
-        //5
-        public List<OrderDetails> GetOrderDetailsByProductId(int idproductquery)
-        {
-            using var db = new NorthwindContex();
-            var query =
-                from od in db.OrderDetails
-                join o in db.Orders on od.OrderId equals o.Id
-                where od.ProductId == idproductquery
-                select new OrderDetails() {OrderId = od.OrderId, Quantity = od.Quantity, UnitPrice = od.UnitPrice, Order = new Order(){Id = o.Id, Date = o.Date, ShipName = o.ShipName, ShipCity = o.ShipCity}};
-            return query.ToList();
-        } 
-        
-        // PRODUCT
-        public List<Product> GetProducts()
-        {
-            using var db = new NorthwindContex();
-            return db.Products.ToList();
-        }
-        
-        //6
-        public Product GetProduct(int idproductquery)
-        {
-            using var db = new NorthwindContex();
-            return db.Products
-                .Join(db.Categories,
-                    product => product.CategoryId,
-                    category => category.Id,
-                    (product,category)=> new Product(){Id = product.Id, Name = product.Name, QuantityPerUnit = product.QuantityPerUnit, UnitPrice = product.UnitPrice, UnitsInStock = product.UnitsInStock, Category = new Category(){Id = category.Id, Name = category.Name, Description = category.Description}})
-                .FirstOrDefault(x => x.Id == idproductquery);
-        }
-        
-        //7
-        public List<Product> GetProductByName(string partstringquery)
-        {
-            using var db = new NorthwindContex();
-            var query =
-                from p in db.Products
-                join c in db.Categories on p.CategoryId equals c.Id
-                where p.Name.Contains(partstringquery)
-                select new Product(){Id = p.Id, Name = p.Name, UnitPrice = p.UnitPrice, Category = new Category(){Id = c.Id, Name = c.Name, Description = c.Description}};
-            return query.ToList();
-        }
-        
-        //8
-        public List<Product> GetProductByCategory(int idcategoryquery)
-        {
-            using var db = new NorthwindContex();
-            var query =
-                from p in db.Products
-                join c in db.Categories on p.CategoryId equals c.Id
-                where p.CategoryId == idcategoryquery
-                select new Product(){Id = p.Id, Name = p.Name, UnitPrice = p.UnitPrice, Category = new Category(){Id = c.Id, Name = c.Name, Description = c.Description}};
-            return query.ToList();
-        }
-        */        
-        // Users
-        //9
         public AppUser GetUser(int id)
         {
             using var db = new StackoverflowContext();
             return db.AppUsers.Find(id); //find uses primary key to find entity
         }
-
-        //10
+        
         public List<AppUser> GetUsers()
         {
             using var db = new StackoverflowContext();
             return db.AppUsers.ToList();
         }
         
-        //11
         public AppUser CreateAppUser(string displayName, string userPassword, string email)
         {
             using var db = new StackoverflowContext();
@@ -165,7 +43,7 @@ namespace DatabaseService
 
             return db.AppUsers.Find(nextId);
         }
-        //12
+        
         public Boolean UpdateAppUser(int id, string displayname, string password, string email)
         {
             using var db = new StackoverflowContext();
@@ -187,7 +65,7 @@ namespace DatabaseService
                 return false;
             }
         }
-        //13
+
         public Boolean DeleteAppUser(int userid)
         {
             using var db = new StackoverflowContext();
@@ -208,15 +86,18 @@ namespace DatabaseService
             }
         }
         
-        public List<Post> SearchPosts(int userId, string searchString) 
+        public List<Question> SearchPosts(int userId, string searchString) 
         {
             using var db = new StackoverflowContext();
+
             var query =
                 from p in db.Posts
+                join q in db.Questions on p.PostId equals q.QuestionId
                 where p.Body.Contains(searchString)
-                select new Post()
+                select new Question()
                 {
-                    PostId = p.PostId, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId
+                    QuestionId = q.QuestionId, Title = q.Title, ClosedDate = q.ClosedDate, AcceptAnswer = q.AcceptAnswer, 
+                    QuestionPost = new Post(){PostId = q.QuestionId, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId},
                 };
 
             var searchHistoryEntity = AddToSearchHistory(userId, searchString);
@@ -224,23 +105,6 @@ namespace DatabaseService
             return query.ToList();
         }
         
-        /*public List<Question> SearchQuestions(int userId, string searchString) //currently set up to only search for question posts
-        {
-            using var db = new StackoverflowContext();
-            var query =
-                from p in db.Posts
-                join u in db.Questions on p.PostId equals u.QuestionId //comment out this line to search for all posts
-                where p.Body.Contains(searchString)
-                select new Question()
-                {
-                    PostId = p.PostId, Title = u.Title, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId
-                };
-
-            var searchHistoryEntity = AddToSearchHistory(userId, searchString);
-            
-            return query.ToList();
-        }*/
-
         public List<Post> GetAllPosts()
         {
             using var db = new StackoverflowContext();
@@ -448,6 +312,68 @@ namespace DatabaseService
             db.MarkingsPost.Remove(marking);
             db.SaveChanges();
             return true;
+        }
+
+        public Question getQuestion(int questionId)
+        {
+            using var db = new StackoverflowContext();
+            
+                var query =
+                from p in db.Posts
+                join q in db.Questions on p.PostId equals q.QuestionId
+                where q.QuestionId.Equals(questionId)
+                select new Question()
+                {
+                    QuestionId = q.QuestionId, Title = q.Title, ClosedDate = q.ClosedDate, AcceptAnswer = q.AcceptAnswer,  
+                    QuestionPost = new Post(){PostId = q.QuestionId, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId}, 
+                    Answers = null
+                };
+                
+            List<Question> questions = query.ToList();
+            Question question = questions.First();
+            question.Answers = GetAnswers(question.QuestionId);
+            return question;
+
+        }
+
+        public List<Comment> GetComments(int postId)
+        {
+            using var db = new StackoverflowContext();
+            
+            var query =
+                from c in db.Comments
+                where c.PostId.Equals(postId)
+                select new Comment()
+                {
+                    CommentId = c.CommentId, TextContain = c.TextContain, Score = c.Score, CreationDate = c.CreationDate, PostId = c.PostId, UserId = c.UserId
+                };
+            return query.ToList();
+        }
+
+        public List<Answer> GetAnswers(int questionId)
+        {
+            using var db = new StackoverflowContext();
+
+            var queryAnswers =
+                from p in db.Posts
+                join a in db.Answers on p.PostId equals
+                    a.AnswerId // Can maybe be improved by first selecting all answers related to the questionid in a subquery, then joining with post table.
+                where a.QuestionId.Equals(questionId)
+                select new Answer()
+                {
+                    AnswerId = a.AnswerId, QuestionId = a.QuestionId,
+                    AnswerPost = new Post()
+                    {
+                        PostId = p.PostId, Body = p.Body, Comments = null, Score = p.Score, //GetComments(p.PostId)
+                        CreationDate = p.CreationDate, UserId = p.UserId, 
+                    }
+                };
+            List<Answer> answers = queryAnswers.ToList();
+            for (int i = 0; i < answers.Count; i++)
+            {
+                answers[i].AnswerPost.Comments = GetComments(answers[i].AnswerId);
+            }            
+            return answers;
         }
     }
 }

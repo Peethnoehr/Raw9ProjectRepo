@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DatabaseService;
@@ -140,7 +141,31 @@ namespace Assignment4.Tests
             Assert.Equal(1,markings.First().UserId);
             Assert.Null(markings.First().Annotation);
         }
-        
+
+        [Fact]
+        public void TestGetQuestion()
+        {
+            var service = new DataService();
+            Question q = service.getQuestion(19);
+            Assert.Equal(531, q.AcceptAnswer);
+            Assert.Equal("What is the fastest way to get the value of π?", q.Title);
+            Assert.Equal(71,q.Answers[0].AnswerPost.PostId);
+        }
+
+        [Fact]
+        public void TestGetAnswers()
+        {
+            var service = new DataService();
+            List<Answer> answers = service.GetAnswers(19);
+        }
+
+        [Fact]
+        public void TestGetComment()
+        {
+            var service = new DataService();
+            List<Comment> comments = service.GetComments(71);
+        }
+
 /*
         [Fact]
         public void DeleteCategory_InvalidId_ReturnsFalse()
