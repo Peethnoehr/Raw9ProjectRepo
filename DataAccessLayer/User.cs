@@ -1,16 +1,13 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Design;
-using StackOverFlow;
+﻿using System;
 
-namespace DataAccessLayer
+namespace StackOverFlow
 {
     public class User
     {
-        public string Username { get; set; }
+        public string UserName { get; set; }
+        public DateTime CreationDate { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
         public string Salt { get; set; }
-
-        List<Marking> Marking { get; set; }
     }
 }

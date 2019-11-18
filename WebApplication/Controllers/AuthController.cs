@@ -86,7 +86,7 @@ namespace WebServiceToken.Controllers
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 }),
                 Expires = DateTime.Now.AddSeconds(20),
                 SigningCredentials = new SigningCredentials(
@@ -98,7 +98,7 @@ namespace WebServiceToken.Controllers
 
             var token = tokenHandler.WriteToken(securityToken);
 
-            return Ok(new {user.Username, token});
+            return Ok(new {user.UserName, token});
 
         }
 

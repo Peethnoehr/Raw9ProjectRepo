@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DatabaseService;
+using DataAccessLayer;
 using StackOverFlow;
 
 namespace DataAccessLayer
@@ -11,28 +11,28 @@ namespace DataAccessLayer
         // User
         public User GetUser(string username)
         {
-            using var db = new StackoverflowContex();
+            using var db = new StackoverflowContext();
             
             var query =
-                from o in db.User
-                where o.Username == username
-                select new User(){Username = o.Username, Email = o.Email, Password = o.Password, Salt = o.Salt};
+                from o in db.Users
+                where o.UserName == username
+                select new User(){UserName = o.UserName, Email = o.Email, Password = o.Password, Salt = o.Salt};
             return query.FirstOrDefault();
         }
 
         public User CreateUser(string username, string password, string email ,string salt)
         {
-            using var db = new StackoverflowContex();
+            using var db = new StackoverflowContext();
             
             var user = new User()
             {
-                Username = "Aurélien",
-                Password = "test",
-                Email = "test",
-                Salt = "test"
+                UserName = username,
+                Password = password,
+                Email = email,
+                Salt = salt
             };
             
-            db.User.Add(user);
+            db.Users.Add(user);
             
             db.SaveChanges();
             
@@ -42,10 +42,11 @@ namespace DataAccessLayer
         // Post
         public Post GetPost(int postid)
         {
-            using var db = new StackoverflowContex();
+            using var db = new StackoverflowContext();
 
             var query =
-                from o in db.Post
+                from o in db.Posts
+                join c in db.Questions on o.Id equals c.Id
                 where o.Id == postid
                 select new Post() {Id = o.Id, Body = o.Body, Score = o.Score};
             return query.FirstOrDefault();

@@ -23,7 +23,7 @@ namespace DatabaseService
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(
-                "host=localhost;db=stackoverflow;uid=[uid];pwd=[pwd]");
+                "host=localhost;db=stackoverflow;uid=postgres;pwd=atdeti6!");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -66,6 +66,7 @@ namespace DatabaseService
             modelBuilder.Entity<Question>().Property(m => m.Id).HasColumnName("questionid");
             modelBuilder.Entity<Question>().Property(m => m.ClosedDate).HasColumnName("closeddate");
             modelBuilder.Entity<Question>().Property(m => m.Title).HasColumnName("title");
+            modelBuilder.Entity<Question>().Property(m => m.AcceptAnswer).HasColumnName("acceptanswer");
             
             modelBuilder.Entity<Answer>().ToTable("qa_answer");
             modelBuilder.Entity<Answer>().Property(m => m.Id).HasColumnName("questionid");

@@ -24,14 +24,27 @@ namespace StackOverFlow.Tests
         {
             var NewUser = new 
             {
-                UserName = "Aurélien",
-                Password = "test",
+                UserName = "Baptiste",
+                Password = "jtm",
                 Email = "auba@ruc.dk"
             };
             
             var (user, statusCode) = PostData($"{AuthApi}/users", NewUser);
             
-            Assert.Equal("Aurélien", user["Username"]);
+            Assert.Equal(HttpStatusCode.Created, statusCode);
+        }
+        
+        [Fact]
+        public void ApiAuth_User_AlreadyCreated()
+        {
+            var NewUser = new 
+            {
+                UserName = "Baptiste",
+            };
+            
+            var (user, statusCode) = PostData($"{AuthApi}/users", NewUser);
+            
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
         }
         
         [Fact]
@@ -46,7 +59,7 @@ namespace StackOverFlow.Tests
         [Fact]
         public void ApiPost_GetWithPostId_Ok()
         {
-            var (post, statusCode) = GetArray($"{PostsApi}/19");
+            var (post, statusCode) = GetObject($"{PostsApi}/19");
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
             Assert.Equal(164, post["score"]);
