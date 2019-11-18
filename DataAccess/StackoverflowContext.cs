@@ -1,8 +1,7 @@
 ﻿using System.Security.Cryptography;
-using DatabaseService;
 using Microsoft.EntityFrameworkCore;
 
-namespace Assignment4
+namespace DataAccess
 {
     public class StackoverflowContext : DbContext
     {

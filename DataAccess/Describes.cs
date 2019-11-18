@@ -1,4 +1,4 @@
-﻿namespace Assignment4
+﻿namespace DataAccess
 {
     public class Describes
     {

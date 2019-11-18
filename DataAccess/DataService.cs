@@ -4,9 +4,9 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Assignment4;
+using DataAccess;
 
-namespace DatabaseService
+namespace DataBaseService
 {
     public class DataService
     {

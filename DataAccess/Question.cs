@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Assignment4
+namespace DataAccess
 {
     public class Question
     {
