@@ -1,13 +1,13 @@
 ﻿using System;
 
-namespace DataAccess
+namespace StackOverFlow
 {
-    public class AppUser
+    public class User
     {
-        public int UserId { get; set; }
-        public string DisplayName { get; set; }
+        public string UserName { get; set; }
         public DateTime CreationDate { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public string Salt { get; set; }
     }
 }

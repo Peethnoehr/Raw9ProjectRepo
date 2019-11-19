@@ -1,4 +1,4 @@
-﻿namespace DataAccess
+﻿namespace StackOverFlow
 {
     public class Links
     {

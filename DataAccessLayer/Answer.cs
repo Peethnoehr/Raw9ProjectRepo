@@ -1,10 +1,9 @@
-﻿namespace DataAccess
+﻿namespace StackOverFlow
 {
     public class Answer
     {
-        public int AnswerId { get; set; }
+        public int Id { get; set; }
         public int QuestionId { get; set; }
-        
         public Post AnswerPost { get; set; }
     }
 }
