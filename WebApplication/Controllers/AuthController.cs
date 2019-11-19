@@ -14,6 +14,7 @@ using WebServiceToken.Services;
 
 namespace WebServiceToken.Controllers
 {
+    /*
     [ApiController]
     [Route("api/auth")]
     public class AuthController : ControllerBase
@@ -102,5 +103,5 @@ namespace WebServiceToken.Controllers
 
         }
 
-    }
+    }*/
 }

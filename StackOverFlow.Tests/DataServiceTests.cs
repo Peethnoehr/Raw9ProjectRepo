@@ -7,202 +7,243 @@ namespace StackOverFlow.Tests
 {
     public class DataServiceTests
     {
-        /* Categories */
-
-        /*[Fact]
-        public void Category_Object_HasIdNameAndDescription()
-        {
-            var user = new Category();
-            Assert.Equal(0, category.Id);
-            Assert.Null(category.Name);
-            Assert.Null(category.Description);
-        }*/
-
-        /*[Fact]
-        public void GetAllCategories_NoArgument_ReturnsAllCategories()
+        // User
+        [Fact]
+        public void GetAllUsers_NoArgument_ReturnsAllUsers()
         {
             var service = new DataService();
-            var categories = service.GetCategories();
-            Assert.Equal(8, categories.Count);
-            Assert.Equal("Beverages", categories.First().Name);
+            var users = service.GetUsers();
+            Assert.Equal(2, users.Count);
+            Assert.Equal("Baptiste", users.First().UserName);
         }
 
         [Fact]
-        public void GetCategory_ValidId_ReturnsCategoryObject()
+        public void GetUser_ValidUsername_ReturnsUserObject()
         {
             var service = new DataService();
-            var category = service.GetCategory(1);
-            Assert.Equal("Beverages", category.Name);
+            var user = service.GetUser("Baptiste");
+            Assert.Equal("Baptiste", user.UserName);
+            Assert.Equal("auba@ruc.dk",user.Email);
         }
 
         [Fact]
-        public void CreateCategory_ValidData_CreteCategoryAndRetunsNewObject()
+        public void CreateUser_ValidData_CreateUserAndRetunsNewObject()
         {
             var service = new DataService();
-            var category = service.CreateCategory("Test", "CreateCategory_ValidData_CreteCategoryAndRetunsNewObject");
-            Assert.True(category.Id > 0);
-            Assert.Equal("Test", category.Name);
-            Assert.Equal("CreateCategory_ValidData_CreteCategoryAndRetunsNewObject", category.Description);
+            var user = service.CreateUser("Test", "testpw", "test@test.test","test",DateTime.Now);
+            Assert.Equal("Test", user.UserName);
+            Assert.Equal("testpw", user.Password);
+            Assert.Equal("test@test.test", user.Email);
 
             // cleanup
-            service.DeleteCategory(category.Id);
+            service.DeleteUser(user.UserName);
         }
 
         [Fact]
         public void DeleteCategory_ValidId_RemoveTheCategory()
         {
             var service = new DataService();
-            var category = service.CreateCategory("Test", "DeleteCategory_ValidId_RemoveTheCategory");
-            var result = service.DeleteCategory(category.Id);
+            var user = service.CreateUser("Test", "testpw", "test@test.test","test",DateTime.Now);
+            var result = service.DeleteUser(user.UserName);
             Assert.True(result);
-            category = service.GetCategory(category.Id);
-            Assert.Null(category);
+            user = service.GetUser(user.UserName);
+            Assert.Null(user);
         }
-
+        
         [Fact]
-        public void DeleteCategory_InvalidId_ReturnsFalse()
+        public void UpdateUser_DisplayName_Password_Email()
         {
             var service = new DataService();
-            var result = service.DeleteCategory(-1);
-            Assert.False(result);
-        }
+            var user = service.CreateUser("Test", "testpw", "test@test.test","test",DateTime.Now);
 
+            var result1 = service.UpdateUser(user.UserName, "UpdatedPassword1","UpdatedEmail1", "UpdateSalt");
+            Assert.True(result1);
+
+            user = service.GetUser(user.UserName);
+            Assert.Equal("UpdatedPassword1", user.Password);
+            Assert.Equal("UpdatedEmail1", user.Email);
+
+            var result2 = service.UpdateUser(user.UserName, null,null,"Test");
+            Assert.True(result2);
+
+            user = service.GetUser(user.UserName);
+            Assert.Equal("UpdatedPassword1",user.Password);
+            Assert.Equal("UpdatedEmail1",user.Email);
+
+            var result3 = service.UpdateUser(user.UserName, "UpdatedPassword2",null, null);
+            Assert.True(result3);
+
+            user = service.GetUser(user.UserName);
+            Assert.Equal("UpdatedPassword2",user.Password);
+            Assert.Equal("UpdatedEmail1",user.Email);
+            
+            var result4 = service.UpdateUser(user.UserName, null,"UpdatedEmail2", null);
+            Assert.True(result4);
+
+            user = service.GetUser(user.UserName);
+            Assert.Equal("UpdatedPassword2",user.Password);
+            Assert.Equal("UpdatedEmail2",user.Email);
+            // cleanup
+            service.DeleteUser(user.UserName);
+        }
+        
+        // Marking
         [Fact]
-        public void UpdateCategory_NewNameAndDescription_UpdateWithNewValues()
+        public void CreateMarking_ValidData_CreateMarkingrWithPostAndRetunsNewObject()
         {
             var service = new DataService();
-            var category = service.CreateCategory("TestingUpdate", "UpdateCategory_NewNameAndDescription_UpdateWithNewValues");
-
-            var result = service.UpdateCategory(category.Id, "UpdatedName", "UpdatedDescription");
-            Assert.True(result);
-
-            category = service.GetCategory(category.Id);
-
-            Assert.Equal("UpdatedName", category.Name);
-            Assert.Equal("UpdatedDescription", category.Description);
+            var marking = service.CreateMarking("testpw", "Baptiste",19,null,DateTime.Now);
+            Assert.Equal(1, marking.Id);
+            Assert.Equal("testpw", marking.Annotation);
 
             // cleanup
-            service.DeleteCategory(category.Id);
+            service.DeleteMarking(marking.Id);
         }
 
         [Fact]
-        public void UpdateCategory_InvalidID_ReturnsFalse()
+        public void UpdateMarking_Annotation()
         {
             var service = new DataService();
-            var result = service.UpdateCategory(-1, "UpdatedName", "UpdatedDescription");
-            Assert.False(result);
+            var marking = service.CreateMarking("testpw", "Baptiste",19,null,DateTime.Now);
+
+            var result1 = service.UpdateMarking(1,"UpdateAnnotation");
+            Assert.True(result1);
+
+            marking = service.GetMarking(marking.Id);
+            Assert.Equal("UpdateAnnotation", marking.Annotation);
+        }
+        
+        [Fact]
+        public void GetAllMarking_Username_ReturnsAllMarkings()
+        {
+            var service = new DataService();
+            var markings = service.GetMarkings("Baptiste");
+            Assert.Equal(19, markings.First().PostId);
+            Assert.Equal(19, markings.First().Post.Id);
+            Assert.Equal("algorithm", markings.First().Post.Tags.First().Name);
+            Assert.Null(markings.First().CommentId);
+        }
+        
+        // SearchHistory
+        [Fact]
+        public void CreateSearchHistory_ValidData_CreateSearchHistoryWithPostAndRetunsNewObject()
+        {
+            var service = new DataService();
+            var searchHistory = service.CreateSearchHistory("testsearch", "Baptiste",DateTime.Now);
+            Assert.Equal(1, searchHistory.Id);
+            Assert.Equal("testsearch", searchHistory.Text);
+
+            // cleanup
+            service.DeleteMarking(searchHistory.Id);
         }
 
+        [Fact]
+        public void GetAllSearchHistories_Username_ReturnsAllSearchHistories()
+        {
+            var service = new DataService();
+            var searchHistory = service.CreateSearchHistory("testsearch", "Baptiste",DateTime.Now);
+            var searchHistories = service.GetSearchHistories("Baptiste");
+            Assert.Equal(1, searchHistories.First().Id);
+            Assert.Equal("testsearch", searchHistories.First().Text);
+        }
+        
+        // Comment
+        [Fact]
+        public void GetAllComments_postId_ReturnsAllComments()
+        {
+            var service = new DataService();
+            var comments = service.GetComments(19);
+            Assert.Equal(16, comments.Count);
+            Assert.Equal("*boggle* If it's a personal challenge, why are you asking us for the solution? =)", comments.First().TextContain);
+            Assert.Equal("Erik Forbes", comments.First().QAUser.DisplayName);
+        }
+        
+        // Tag
+        [Fact]
+        public void GetAllTags_Postid_ReturnsAllTags()
+        {
+            var service = new DataService();
+            var tags = service.GetTags(19);
+            Assert.Equal(35, tags.First().Id);
+            Assert.Equal("algorithm", tags.First().Name);
+        }
+        
+        // Post
+        [Fact]
+        public void GetPost_Postid_ReturnPost()
+        {
+            var service = new DataService();
+            var tags = service.GetDetailQuestion(19);
+        }
 
-        /* products */
-
+        // -----------------
         /*[Fact]
-        public void Product_Object_HasIdNameUnitPriceQuantityPerUnitAndUnitsInStock()
+        public void SearchTest()
         {
-            var product = new Product();
-            Assert.Equal(0, product.Id);
-            Assert.Null(product.Name);
-            Assert.Equal(0.0, product.UnitPrice);
-            Assert.Null(product.QuantityPerUnit);
-            Assert.Equal(0, product.UnitsInStock);
+            var service = new DataService();
+            var result = service.SearchPosts(1,"abc");
+            Assert.True(result.Count > 0 && result.Count < service.GetAllPosts().Count);
+        }
+        
+        [Fact]
+        public void TestAddToSearchHistory()
+        {
+            var service = new DataService();
+            var sh = service.AddToSearchHistory(1, "test");
+            Assert.Equal(1, sh.UserId);
+            Assert.Equal("test",sh.SearchText);
+
+            // cleanup
+            service.DeleteSearchHistory(sh.SearchHistoryId);
         }
 
         [Fact]
-        public void GetProduct_ValidId_ReturnsProductWithCategory()
+        public void TestSetMarkingWithAnnotation()
         {
             var service = new DataService();
-            var product = service.GetProduct(1);
-            Assert.Equal("Chai", product.Name);
-            Assert.Equal("Beverages", product.Category.Name);
+            var marking = service.SetMarkingPost(1, 19,"testAnnotation2");
+            Assert.Equal("testAnnotation2",marking.Annotation);
+            var markings = service.GetMarkedPosts(1);
+            Assert.True(1 == markings.Count);
+            Assert.Equal("testAnnotation2",markings.First().Annotation);
+            
+            //cleanup
+//            service.RemoveMarking(markings.First().MarkingId);
+        }
+        
+        [Fact]
+        public void TestSetMarkingNoAnnotation()
+        {
+            var service = new DataService();
+            var marking = service.SetMarkingPost(1, 19,null);
+            var markings = service.GetMarkedPosts(1);
+            Assert.Equal(19,markings.First().PostId);
+            Assert.Equal(1,markings.First().UserId);
+            Assert.Null(markings.First().Annotation);
         }
 
         [Fact]
-        public void GetProductsByCategory_ValidId_ReturnsProductWithCategory()
+        public void TestGetQuestion()
         {
             var service = new DataService();
-            var products = service.GetProductByCategory(1);
-            Assert.Equal(12, products.Count);
-            Assert.Equal("Chai", products.First().Name);
-            Assert.Equal("Beverages", products.First().Category.Name);
-            Assert.Equal("Lakkalikööri", products.Last().Name);
+            Question q = service.getQuestion(19);
+            Assert.Equal(531, q.AcceptAnswer);
+            Assert.Equal("What is the fastest way to get the value of π?", q.Title);
+            Assert.Equal(71,q.Answers[0].AnswerPost.PostId);
         }
 
         [Fact]
-        public void GetProduct_NameSubString_ReturnsProductsThatMachesTheSubString()
+        public void TestGetAnswers()
         {
             var service = new DataService();
-            var products = service.GetProductByName("em");
-            Assert.Equal(4, products.Count);
-            Assert.Equal("NuNuCa Nuß-Nougat-Creme", products.First().Name);
-            Assert.Equal("Flotemysost", products.Last().Name);
-        }
-
-        /* orders */
-        /*[Fact]
-        public void Order_Object_HasIdDatesAndOrderDetails()
-        {
-            var order = new Order();
-            Assert.Equal(0, order.Id);
-            Assert.Equal(new DateTime(), order.Date);
-            Assert.Equal(new DateTime(), order.Required);
-            Assert.Null(order.OrderDetails);
-            Assert.Null(order.ShipName);
-            Assert.Null(order.ShipCity);
+            List<Answer> answers = service.GetAnswers(19);
         }
 
         [Fact]
-        public void GetOrder_ValidId_ReturnsCompleteOrder()
+        public void TestGetComment()
         {
             var service = new DataService();
-            var order = service.GetOrder(10248);
-            Assert.Equal(3, order.OrderDetails.Count);
-            Assert.Equal("Queso Cabrales", order.OrderDetails.First().Product.Name);
-            Assert.Equal("Dairy Products", order.OrderDetails.First().Product.Category.Name);
-        }
-
-        [Fact]
-        public void GetOrders()
-        {
-            var service = new DataService();
-            var orders = service.GetOrders();
-            Assert.Equal(830, orders.Count);
-        }
-
-
-        /* orderdetails */
-        /*[Fact]
-        public void OrderDetails_Object_HasOrderProductUnitPriceQuantityAndDiscount()
-        {
-            var orderDetails = new OrderDetails();
-            Assert.Equal(0, orderDetails.OrderId);
-            Assert.Null(orderDetails.Order);
-            Assert.Equal(0, orderDetails.ProductId);
-            Assert.Null(orderDetails.Product);
-            Assert.Equal(0.0, orderDetails.UnitPrice);
-            Assert.Equal(0.0, orderDetails.Quantity);
-            Assert.Equal(0.0, orderDetails.Discount);
-        }
-
-        [Fact]
-        public void GetOrderDetailByOrderId_ValidId_ReturnsProductNameUnitPriceAndQuantity()
-        {
-            var service = new DataService();
-            var orderDetails = service.GetOrderDetailsByOrderId(10248);
-            Assert.Equal(3, orderDetails.Count);
-            Assert.Equal("Queso Cabrales", orderDetails.First().Product.Name);
-            Assert.Equal(14, orderDetails.First().UnitPrice);
-            Assert.Equal(12, orderDetails.First().Quantity);
-        }
-
-        [Fact]
-        public void GetOrderDetailByProductId_ValidId_ReturnsOrderDateUnitPriceAndQuantity()
-        {
-            var service = new DataService();
-            var orderDetails = service.GetOrderDetailsByProductId(11);
-            Assert.Equal(38, orderDetails.Count);
-            Assert.Equal("1997-05-06", orderDetails.First().Order.Date.ToString("yyyy-MM-dd"));
-            Assert.Equal(21, orderDetails.First().UnitPrice);
-            Assert.Equal(3, orderDetails.First().Quantity);
+            List<Comment> comments = service.GetComments(71);
         }*/
     }
 }

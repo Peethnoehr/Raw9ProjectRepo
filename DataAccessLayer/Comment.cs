@@ -8,7 +8,9 @@ namespace StackOverFlow
         public string TextContain { get; set; }
         public int Score { get; set; }
         public DateTime CreationDate { get; set; }
-        public string UserName { get; set; }
+        public int UserId { get; set; }
         public int PostId { get; set; }
+        
+        public QAUser QAUser { get; set; }
     }
 }

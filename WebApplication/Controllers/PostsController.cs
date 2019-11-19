@@ -11,7 +11,7 @@ namespace WebServiceToken.Controllers
     [Route("api/posts")]
     public class PostsController : Controller
     {
-        private readonly IDataService _dataService;
+        /*private readonly IDataService _dataService;
 
         public PostsController(IDataService dataService)
         {

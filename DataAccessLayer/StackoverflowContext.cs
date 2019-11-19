@@ -11,7 +11,7 @@ namespace DataAccessLayer
         public DbSet<Answer> Answers { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<Describes> Descriptions { get; set; }
+        public DbSet<Describes> Describes { get; set; }
         public DbSet<Links> Links { get; set; }
         public DbSet<Marking> Markings { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -34,6 +34,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<Marking>().Property(m => m.Username).HasColumnName("username");
             modelBuilder.Entity<Marking>().Property(m => m.CommentId).HasColumnName("commentid");
             modelBuilder.Entity<Marking>().Property(m => m.Annotation).HasColumnName("annotation");
+            modelBuilder.Entity<Marking>().Property(m => m.PostId).HasColumnName("postid");
             
             modelBuilder.Entity<SearchHistory>().ToTable("hm_searchhistory");
             modelBuilder.Entity<SearchHistory>().Property(m => m.Id).HasColumnName("searchhistoryid");
@@ -58,7 +59,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<Comment>().Property(m => m.TextContain).HasColumnName("textcontain");
             modelBuilder.Entity<Comment>().Property(m => m.Score).HasColumnName("score");
             modelBuilder.Entity<Comment>().Property(m => m.CreationDate).HasColumnName("creationdate");
-            modelBuilder.Entity<Comment>().Property(m => m.UserName).HasColumnName("username");
+            modelBuilder.Entity<Comment>().Property(m => m.UserId).HasColumnName("userid");
             modelBuilder.Entity<Comment>().Property(m => m.PostId).HasColumnName("postid");
             
             modelBuilder.Entity<Describes>().ToTable("qa_describes");
@@ -76,7 +77,7 @@ namespace DataAccessLayer
             modelBuilder.Entity<Post>().Property(m => m.Body).HasColumnName("body");
             modelBuilder.Entity<Post>().Property(m => m.Score).HasColumnName("score");
             modelBuilder.Entity<Post>().Property(m => m.CreationDate).HasColumnName("creationdate");
-            modelBuilder.Entity<Post>().Property(m => m.UserName).HasColumnName("username");
+            modelBuilder.Entity<Post>().Property(m => m.UserId).HasColumnName("userid");
             
             modelBuilder.Entity<Question>().ToTable("qa_question");
             modelBuilder.Entity<Question>().Property(m => m.Id).HasColumnName("questionid");
