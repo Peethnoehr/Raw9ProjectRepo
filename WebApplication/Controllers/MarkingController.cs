@@ -27,9 +27,9 @@ namespace WebServiceToken.Controllers
         }
 
         [HttpPost("markings")]
-        public ActionResult GetMarkings([FromBody]string username)
+        public ActionResult GetMarkings([FromBody]User user)
         {
-            var markings = _dataService.GetMarkings(username);
+            var markings = _dataService.GetMarkings(user.UserName);
             
             if (markings == null) return NotFound();
 

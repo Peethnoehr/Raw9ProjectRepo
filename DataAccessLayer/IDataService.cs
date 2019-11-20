@@ -25,5 +25,6 @@ namespace DataAccessLayer
         Question GetDetailQuestion(int postid);
         List<Post> GetAnswers(int postid);
         Answer getAnswer(int postid);
+        List<Post> searchPosts(string searchtext);
     }
 }

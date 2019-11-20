@@ -9,6 +9,7 @@ using DataAccessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using StackOverFlow;
 using WebServiceToken.Models;
 using WebServiceToken.Services;
 
@@ -26,9 +27,9 @@ namespace WebServiceToken.Controllers
         }
         
         [HttpPost]
-        public ActionResult GetSearch([FromBody]string username)
+        public ActionResult GetSearch([FromBody]User user)
         {
-            var searchHistories = _dataService.GetSearchHistories(username);
+            var searchHistories = _dataService.GetSearchHistories(user.UserName);
             
             if (searchHistories == null) return NotFound();
 

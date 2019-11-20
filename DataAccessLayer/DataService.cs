@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using DataAccessLayer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Internal;
+using Npgsql;
 using StackOverFlow;
 
 namespace DataAccessLayer
@@ -355,23 +358,18 @@ namespace DataAccessLayer
             return answers;
         }
         
-        public List<Question> SearchPosts(string username, string searchString) 
+        public List<Post> searchPosts(string searchtext)
         {
             using var db = new StackoverflowContext();
+            var search = "java";
+            var function = db.Posts
+                .FromSqlRaw("SELECT * FROM exactMatchQuery(\'"+searchtext+"\')")
+                .Select(post => new Post(){Id = post.Id, Body = post.Body, Title = post.Title})
+                .ToList(); 
 
-            var query =
-                from p in db.Posts
-                join q in db.Questions on p.Id equals q.Id
-                where p.Body.Contains(searchString)
-                select new Question()
-                {
-                    Id = q.Id, Title = q.Title, ClosedDate = q.ClosedDate, AcceptAnswer = q.AcceptAnswer, 
-                    Post = new Post(){Id = q.Id, Body = p.Body, Score = p.Score, CreationDate = p.CreationDate, UserId = p.UserId},
-                };
+            var posts = function.ToList();
 
-            var searchHistoryEntity = CreateSearchHistory(searchString, username, DateTime.Now);
-            
-            return query.ToList();
+            return posts;
         }
 
         // Answer

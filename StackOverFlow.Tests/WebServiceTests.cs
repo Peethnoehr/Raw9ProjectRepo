@@ -105,7 +105,7 @@ namespace StackOverFlow.Tests
         [Fact]
         public void ApiMark_Marking_Get()
         {
-            var NewUser = new 
+            var NewUser = new
             {
                 UserName = "Baptiste"
             };
@@ -135,12 +135,28 @@ namespace StackOverFlow.Tests
         [Fact]
         public void ApiPost_GetWithPostId_Ok()
         {
-            var (post, statusCode) = PostData($"{PostsApi}", 19);
+            var NewPost = new 
+            {
+                Id = 19
+            };
+            
+            var (post, statusCode) = PostData($"{PostsApi}", NewPost);
 
             Assert.Equal(HttpStatusCode.OK, statusCode);
         }
 
-        
+        [Fact]
+        public void ApiPost_GetWithSearchText_Ok()
+        {
+            var NewText = new 
+            {
+                SearchText = "java help me"
+            };
+            
+            var (post, statusCode) = PostData($"{PostsApi}/search", NewText);
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+        }
         
         
         

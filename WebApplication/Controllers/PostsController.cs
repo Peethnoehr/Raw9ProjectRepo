@@ -19,20 +19,30 @@ namespace WebServiceToken.Controllers
         }
 
         [HttpPost]
-        public ActionResult<Question> GetDetailQuestion([FromBody]int postId)
+        public ActionResult<Question> GetDetailQuestion([FromBody]Question post)
         {
-            var answer = _dataService.getAnswer(postId);
+            var answer = _dataService.getAnswer(post.Id);
 
             if (answer != null)
             {
-                postId = answer.QuestionId;
+                post.Id = answer.QuestionId;
             }
             
-            var question = _dataService.GetDetailQuestion(postId);
+            var question = _dataService.GetDetailQuestion(post.Id);
 
             if (question == null) return NotFound();
 
             return Ok(question);
+        }
+        
+        [HttpPost("search")]
+        public ActionResult GetSearch([FromBody]TextForPost searchtext)
+        {
+            var search = _dataService.searchPosts(searchtext.SearchText);
+            
+            if (search == null) return NotFound();
+
+            return Ok();
         }
     }
 }
