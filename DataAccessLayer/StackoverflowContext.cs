@@ -23,7 +23,7 @@ namespace DataAccessLayer
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseNpgsql(
-                "host=localhost;db=stackoverflow;uid=postgres;pwd=atdeti6!");
+                "host=localhost;db=stackoverflow;uid=postgres;pwd=");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
